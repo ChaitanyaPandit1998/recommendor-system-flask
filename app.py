@@ -3,7 +3,6 @@ from flask_cors import CORS
 import numpy as np
 import torch
 from torch.autograd import Variable
-from rbm import RBM
 import pickle
 
 app = Flask(__name__)
@@ -11,6 +10,34 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 authKey = "123authKey123"
 
+
+class RBM():
+  def __init__(self, nv, nh):
+    self.W = torch.randn(nh, nv)
+    self.a = torch.randn(1, nh)
+    self.b = torch.randn(1, nv)
+
+  def sample_h(self, x):
+    wx = torch.mm(x, self.W.t())
+    activation = wx + self.a.expand_as(wx)
+    p_h_given_v = torch.sigmoid(activation)
+    return p_h_given_v, torch.bernoulli(p_h_given_v)
+
+  def sample_v(self, y):
+    wy = torch.mm(y, self.W)
+    activation = wy + self.b.expand_as(wy)
+    p_v_given_h = torch.sigmoid(activation)
+    return p_v_given_h, torch.bernoulli(p_v_given_h)
+
+  def train(self, v0, vk, ph0, phk):
+    self.W += (torch.mm(v0.t(),ph0) - torch.mm(vk.t(),phk)).t()
+    self.b += torch.sum((v0 - vk), 0)
+    self.a += torch.sum((ph0 - phk), 0)
+    
+  def predict(self, x):
+    _, h = self.sample_h(x)
+    _, v = self.sample_v(h)
+    return v
 
 @app.route('/')
 def home():
