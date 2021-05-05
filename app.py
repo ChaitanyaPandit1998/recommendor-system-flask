@@ -6,7 +6,7 @@ from torch.autograd import Variable
 import pickle
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"//*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 authKey = "123authKey123"
 
