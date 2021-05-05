@@ -3,6 +3,7 @@ from flask_cors import CORS
 import numpy as np
 import torch
 from torch.autograd import Variable
+from rbm import RBM
 import pickle
 
 app = Flask(__name__)
@@ -34,4 +35,4 @@ def predict():
   }
 
 if __name__ == '__main__':
-  app.run(debug = False)
+  app.run(debug = True)
