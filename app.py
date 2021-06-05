@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch.autograd import Variable
 import pickle
-from rbm  import RBM
+
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -19,6 +19,7 @@ def home():
 
 @app.route('/predict',methods=['POST'])
 def predict():
+  from rbm  import RBM
   key = request.headers.get('authKey')
   if key != authKey:
     return {
