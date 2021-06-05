@@ -54,7 +54,7 @@ def predict():
   input_arr = res['input_arr']
   input_arr = torch.FloatTensor(input_arr)
   user_input = Variable(input_arr).unsqueeze(0)
-  model = pickle.load(open('models/RBM_Model.sav','rb'))
+  model = pickle.load(open('models/RBM_Model.pkl','rb'))
   output = model.predict(user_input)
   output = output.data.numpy().tolist()
   return {
@@ -62,4 +62,4 @@ def predict():
   }
 
 if __name__ == '__main__':
-  app.run(debug = False)
+  app.run(debug = True)
