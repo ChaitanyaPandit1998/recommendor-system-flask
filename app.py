@@ -43,7 +43,7 @@ class RBM():
 def home():
   return "I like food better than your face"
 
-@app.route('/predict')
+@app.route('/predict',methods=['POST'])
 def predict():
   key = request.headers.get('authKey')
   if key != authKey:
